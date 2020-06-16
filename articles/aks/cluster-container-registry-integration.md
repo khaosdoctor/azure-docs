@@ -4,7 +4,7 @@ description: Learn how to integrate Azure Kubernetes Service (AKS) with Azure Co
 services: container-service
 manager: gwallace
 ms.topic: article
-ms.date: 02/25/2020
+ms.date: 06/16/2020
 
 ---
 
@@ -35,7 +35,7 @@ MYACR=myContainerRegistry
 az acr create -n $MYACR -g myContainerRegistryResourceGroup --sku basic
 
 # Create an AKS cluster with ACR integration
-az aks create -n myAKSCluster -g myResourceGroup --generate-ssh-keys --attach-acr $MYACR
+az aks create -n myAKSCluster -g myResourceGroup --generate-ssh-keys --acr $MYACR --enable-acr
 ```
 
 Alternatively, you can specify the ACR name using an ACR resource ID, which has the following format:
@@ -43,7 +43,7 @@ Alternatively, you can specify the ACR name using an ACR resource ID, which has 
 `/subscriptions/\<subscription-id\>/resourceGroups/\<resource-group-name\>/providers/Microsoft.ContainerRegistry/registries/\<name\>` 
 
 ```azurecli
-az aks create -n myAKSCluster -g myResourceGroup --generate-ssh-keys --attach-acr /subscriptions/<subscription-id>/resourceGroups/myContainerRegistryResourceGroup/providers/Microsoft.ContainerRegistry/registries/myContainerRegistry
+az aks create -n myAKSCluster -g myResourceGroup --generate-ssh-keys --enable-acr --acr /subscriptions/<subscription-id>/resourceGroups/myContainerRegistryResourceGroup/providers/Microsoft.ContainerRegistry/registries/myContainerRegistry
 ```
 
 This step may take several minutes to complete.
@@ -53,25 +53,25 @@ This step may take several minutes to complete.
 Integrate an existing ACR with existing AKS clusters by supplying valid values for **acr-name** or **acr-resource-id** as below.
 
 ```azurecli
-az aks update -n myAKSCluster -g myResourceGroup --attach-acr <acrName>
+az aks update -n myAKSCluster -g myResourceGroup --acr <acrName> --enable-acr
 ```
 
 or,
 
 ```azurecli
-az aks update -n myAKSCluster -g myResourceGroup --attach-acr <acr-resource-id>
+az aks update -n myAKSCluster -g myResourceGroup --acr <acr-resource-id> --enable-acr
 ```
 
 You can also remove the integration between an ACR and an AKS cluster with the following
 
 ```azurecli
-az aks update -n myAKSCluster -g myResourceGroup --detach-acr <acrName>
+az aks update -n myAKSCluster -g myResourceGroup --disable-acr <acrName>
 ```
 
 or
 
 ```azurecli
-az aks update -n myAKSCluster -g myResourceGroup --detach-acr <acr-resource-id>
+az aks update -n myAKSCluster -g myResourceGroup --disable-acr <acr-resource-id>
 ```
 
 ## Working with ACR & AKS
